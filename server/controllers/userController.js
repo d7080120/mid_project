@@ -7,6 +7,7 @@ const createUser = async (req, res) => {
     }
     const user = await User.create({username, name, email, address, phone})
     const users=await User.find().lean()
+
     if (user) { 
         return res.status(201).json({ message: 'New user created',
             user:users
@@ -51,6 +52,7 @@ const updateUser=async (req,res)=>{
 
     const updatedUser=await user.save()
     const users=await User.find().lean()
+
     res.json(users)
 }
 
@@ -66,6 +68,7 @@ const deleteUser=async (req,res)=>{
     }
 
     await user.deleteOne()
+
     const users=await User.find().lean()
     if(!users?.length){
         return res.status(400).json({message: 'No users found'})

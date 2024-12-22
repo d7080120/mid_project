@@ -7,6 +7,7 @@ const createPhoto = async (req, res) => {
     }
     const photo = await Photo.create({title,imageUrl})
     const photos=await Photo.find().lean()
+
     if (photo) { 
         return res.status(201).json({ message: 'New photo created',
             photo:photos
@@ -47,6 +48,7 @@ const updatePhoto=async (req,res)=>{
 
     const updatedPhoto=await photo.save()
     const photos=await Photo.find().lean()
+
     res.json(photos)
 }
 
