@@ -7,8 +7,8 @@ const createUser = async (req, res) => {
     }
     const user = await User.create({username, name, email, address, phone})
     const users=await User.find().lean()
-
-    if (user) { 
+    
+    if (user) {
         return res.status(201).json({ message: 'New user created',
             user:users
          })
