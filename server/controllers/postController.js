@@ -7,8 +7,9 @@ const createPost = async (req, res) => {
     }
     const post = await Post.create({title,body})
     if (post) { 
+        const posts=await Post.find().lean()
         return res.status(201).json({ message: 'New post created',
-            post:post
+            post:posts
          })
     } else {
         return res.status(400).json({ message: 'Invalid post ' })
@@ -23,24 +24,6 @@ const getAllPosts = async (req,res) => {
     res.json(posts)
 }
 
-const getPostsByTitle = async (req,res) => {
-    const {title}=req.params
-    const posts=await Post.find((post)=>{return post.title===title}).lean()
-    if(!posts?.length){
-        return res.status(400).json({message: 'No posts found'})
-    }
-    res.json(posts)
-}
-
-const getPostsByBody = async (req,res) => {
-    const {body}=req.params
-    const posts=await Post.find((post)=>{return post.body===body}).lean()
-    if(!posts?.length){
-        return res.status(400).json({message: 'No posts found'})
-    }
-    res.json(posts)
-}
-
 const getPostById = async (req, res) => {
     const {id} = req.params
     const post = await Post.findById(id).lean()
@@ -48,8 +31,18 @@ const getPostById = async (req, res) => {
     return res.status(400).json({ message: 'No post found' })
     }
     res.json(post)
+}
+const getPostByParams = async (req, res) => {
+    const {title,body} = req.body
+    if(!title &&!body){
+        return res.status(400).json({ message: 'title or body are required' })
     }
-
+    const post = await Post.find({body},{}).lean()
+    if (!post) {
+    return res.status(400).json({ message: 'No post found' })
+    }
+    res.json(post)
+}
 const updatePost=async (req,res)=>{
     const {id,title,body}=req.body
     if(!id||!title){
@@ -63,8 +56,9 @@ const updatePost=async (req,res)=>{
     post.body=body
 
     const updatedPost=await post.save()
+    const posts=await Post.find().lean()
 
-    res.json(`${updatedPost.title} updated`)
+    res.json(posts)
 }
 
 const deletePost=async (req,res)=>{
@@ -79,8 +73,12 @@ const deletePost=async (req,res)=>{
     }
 
     await post.deleteOne()
+    const posts=await Post.find().lean()
+    if(!posts?.length){
+        return res.status(400).json({message: 'No posts found'})
+    }
+    res.json(posts).send(`post ${post.title} id ${post.id} deleted`)
 
-    res.send(`post ${post.title} id ${post.id} deleted`)
 }
 module.exports = {
     createPost,
@@ -88,7 +86,6 @@ module.exports = {
     getPostById,
     updatePost,
     deletePost,
-    getPostsByTitle,
-    getPostsByBody
+    getPostByParams
 }
     

@@ -4,7 +4,7 @@ const router = express.Router()
 
 const photoConroller=require("../controllers/photoController")
 
-router.photo("/", photoConroller.createPhoto)
+router.post("/", photoConroller.createPhoto)
 router.get("/",photoConroller.getAllPhotos)
 router.get("/:id",photoConroller.getPhotoById)
 router.put("/",photoConroller.updatePhoto)
