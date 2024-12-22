@@ -49,7 +49,6 @@ const updatePhoto=async (req,res)=>{
     const updatedPhoto=await photo.save()
     const photos=await Photo.find().lean()
 
-
     res.json(photos)
 }
 

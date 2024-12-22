@@ -65,12 +65,12 @@ const deleteTodo=async (req,res)=>{
     }
 
     await todo.deleteOne()
-
     const todos=await Todo.find().lean()
     if(!todos?.length){
         return res.status(400).json({message: 'No todos found'})
     }
     res.send(`todo ${todo.title} id ${todo.id} deleted`).json(todos)
+
 }
 module.exports = {
     createTodo,

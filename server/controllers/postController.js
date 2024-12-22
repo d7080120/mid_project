@@ -8,6 +8,7 @@ const createPost = async (req, res) => {
     const post = await Post.create({title,body})
     const posts=await Post.find().lean()
     if (post) { 
+        const posts=await Post.find().lean()
         return res.status(201).json({ message: 'New post created',
             post:posts
          })
@@ -24,7 +25,6 @@ const getAllPosts = async (req,res) => {
     res.json(posts)
 }
 
-
 const getPostById = async (req, res) => {
     const {id} = req.params
     const post = await Post.findById(id).lean()
@@ -32,7 +32,7 @@ const getPostById = async (req, res) => {
     return res.status(400).json({ message: 'No post found' })
     }
     res.json(post)
-    }
+}
 
 const getPostByParams=async(req,res)=>{
     const {title,body}=req.body
@@ -81,8 +81,8 @@ const deletePost=async (req,res)=>{
     if(!posts?.length){
         return res.status(400).json({message: 'No posts found'})
     }
-    res.send(`post ${post.title} id ${post.id} deleted`).json(posts)
 
+    res.json(posts).send(`post ${post.title} id ${post.id} deleted`)
 }
 module.exports = {
     createPost,
