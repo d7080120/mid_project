@@ -6,9 +6,11 @@ const createPhoto = async (req, res) => {
         return res.status(400).json({ message: 'imageUrl is required' })
     }
     const photo = await Photo.create({title,imageUrl})
+    const photos=await Photo.find().lean()
+
     if (photo) { // Created
         return res.status(201).json({ message: 'New photo created',
-            photo:photo
+            photo:photos
          })
     } else {
         return res.status(400).json({ message: 'Invalid photo ' })
@@ -45,8 +47,10 @@ const updatePhoto=async (req,res)=>{
     photo.imageUrl=imageUrl
 
     const updatedPhoto=await photo.save()
+    const photos=await Photo.find().lean()
 
-    res.json(`${updatedPhoto.title} updated`)
+
+    res.json(photos)
 }
 
 const deletePhoto=async (req,res)=>{
@@ -61,8 +65,11 @@ const deletePhoto=async (req,res)=>{
     }
 
     await photo.deleteOne()
-
-    res.send(`photo ${photo.title} id ${photo.id} deleted`)
+    const photos=await Photo.find().lean()
+    if(!photos?.length){
+        return res.status(400).json({message: 'No photos found'})
+    }
+    res.json(photos)
 }
 module.exports = {
     createPhoto,

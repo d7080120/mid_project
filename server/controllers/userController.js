@@ -6,9 +6,11 @@ const createUser = async (req, res) => {
         return res.status(400).json({ message: 'username is required' })
     }
     const user = await User.create({username, name, email, address, phone})
+    const users=await User.find().lean()
+    
     if (user) { // Created
         return res.status(201).json({ message: 'New user created',
-            user:user
+            user:users
          })
     } else {
         return res.status(400).json({ message: 'Invalid user ' })
@@ -23,53 +25,6 @@ const getAllUsers = async (req,res) => {
     res.json(users)
 }
 
-
-const getUsersByUsername = async (req,res) => {
-    const {Username}=req.params
-    const users=await User.find((user)=>{return user.Username===Username}).lean()
-    if(!users?.length){
-        return res.status(400).json({message: 'No users found'})
-    }
-    res.json(users)
-}
-
-const getUsersByName = async (req,res) => {
-    const {name}=req.params
-    const users=await User.find((user)=>{return user.name===name}).lean()
-    if(!users?.length){
-        return res.status(400).json({message: 'No users found'})
-    }
-    res.json(users)
-}
-
-
-const getUsersByEmail = async (req,res) => {
-    const {email}=req.params
-    const users=await User.find((user)=>{return user.email===email}).lean()
-    if(!users?.length){
-        return res.status(400).json({message: 'No users found'})
-    }
-    res.json(users)
-}
-
-const getUsersByAddress = async (req,res) => {
-    const {address}=req.params
-    const users=await User.find((user)=>{return user.address===address}).lean()
-    if(!users?.length){
-        return res.status(400).json({message: 'No users found'})
-    }
-    res.json(users)
-}
-
-
-const getUsersByPhone = async (req,res) => {
-    const {phone}=req.params
-    const users=await User.find((user)=>{return user.phone===phone}).lean()
-    if(!users?.length){
-        return res.status(400).json({message: 'No users found'})
-    }
-    res.json(users)
-}
 
 const getUserById = async (req, res) => {
     const {id} = req.params
@@ -96,8 +51,9 @@ const updateUser=async (req,res)=>{
     user.phone=phone
 
     const updatedUser=await user.save()
+    const users=await User.find().lean()
 
-    res.json(`${updatedUser.username} updated`)
+    res.json(users)
 }
 
 const deleteUser=async (req,res)=>{
@@ -113,18 +69,17 @@ const deleteUser=async (req,res)=>{
 
     await user.deleteOne()
 
-    res.send(`user ${user.username} id ${user.id} deleted`)
+    const users=await User.find().lean()
+    if(!users?.length){
+        return res.status(400).json({message: 'No users found'})
+    }
+    res.json(users)
 }
 module.exports = {
     createUser,
     getAllUsers,
     getUserById,
     updateUser,
-    deleteUser,
-    getUsersByAddress,
-    getUsersByEmail,
-    getUsersByPhone,
-    getUsersByName,
-    getUsersByUsername
+    deleteUser
 }
     

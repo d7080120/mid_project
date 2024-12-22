@@ -6,9 +6,11 @@ const createTodo = async (req, res) => {
         return res.status(400).json({ message: 'title is required' })
     }
     const todo = await Todo.create({title,tags})
+    const todos=await Todo.find().lean()
+
     if (todo) { 
         return res.status(201).json({ message: 'New todo created',
-            todo:todo
+            todo:todos
          })
     } else {
         return res.status(400).json({ message: 'Invalid todo ' })
@@ -23,23 +25,6 @@ const getAllTodos = async (req,res) => {
     res.json(todos)
 }
 
-const getTodosByTitle = async (req,res) => {
-    const {title}=req.params
-    const todos=await Todo.find((todo)=>{return todo.title===title}).lean()
-    if(!todos?.length){
-        return res.status(400).json({message: 'No todos found'})
-    }
-    res.json(todos)
-}
-
-const getTodosByTags = async (req,res) => {
-    const {tags}=req.params
-    const todos=await Todo.find((todo)=>{return todo.tags===tags}).lean()
-    if(!todos?.length){
-        return res.status(400).json({message: 'No todos found'})
-    }
-    res.json(todos)
-}
 
 const getTodoById = async (req, res) => {
     const {id} = req.params
@@ -63,8 +48,9 @@ const updateTodo=async (req,res)=>{
     todo.tags=tags
 
     const updatedTodo=await todo.save()
+    const todos=await Todo.find().lean()
 
-    res.json(`${updatedTodo.title} updated`)
+    res.json(todos)
 }
 
 const deleteTodo=async (req,res)=>{
@@ -80,15 +66,17 @@ const deleteTodo=async (req,res)=>{
 
     await todo.deleteOne()
 
-    res.send(`todo ${todo.title} id ${todo.id} deleted`)
+    const todos=await Todo.find().lean()
+    if(!todos?.length){
+        return res.status(400).json({message: 'No todos found'})
+    }
+    res.json(todos)
 }
 module.exports = {
     createTodo,
     getAllTodos,
     getTodoById,
     updateTodo,
-    deleteTodo,
-    getTodosByTitle,
-    getTodosByTags
+    deleteTodo
 }
     
