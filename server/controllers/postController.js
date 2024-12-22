@@ -81,7 +81,8 @@ const deletePost=async (req,res)=>{
     if(!posts?.length){
         return res.status(400).json({message: 'No posts found'})
     }
-    res.json(posts)
+    res.send(`post ${post.title} id ${post.id} deleted`).json(posts)
+
 }
 module.exports = {
     createPost,

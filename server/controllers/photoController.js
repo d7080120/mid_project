@@ -8,7 +8,7 @@ const createPhoto = async (req, res) => {
     const photo = await Photo.create({title,imageUrl})
     const photos=await Photo.find().lean()
 
-    if (photo) { // Created
+    if (photo) {
         return res.status(201).json({ message: 'New photo created',
             photo:photos
          })
@@ -69,7 +69,7 @@ const deletePhoto=async (req,res)=>{
     if(!photos?.length){
         return res.status(400).json({message: 'No photos found'})
     }
-    res.json(photos)
+    res.send(`photo ${photo.title} id ${photo.id} deleted`).json(photos)
 }
 module.exports = {
     createPhoto,

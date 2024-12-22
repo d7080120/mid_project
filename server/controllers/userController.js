@@ -1,14 +1,14 @@
 const User = require("../models/User");
 
 const createUser = async (req, res) => {
-    const { username, name, email, address, phone } = req.name
+    const { username, name, email, address, phone } = req.body
     if (!username) {
         return res.status(400).json({ message: 'username is required' })
     }
     const user = await User.create({username, name, email, address, phone})
     const users=await User.find().lean()
     
-    if (user) { // Created
+    if (user) {
         return res.status(201).json({ message: 'New user created',
             user:users
          })
@@ -36,7 +36,7 @@ const getUserById = async (req, res) => {
     }
 
 const updateUser=async (req,res)=>{
-    const {id,username, name, email, address, phone}=req.name
+    const {id,username, name, email, address, phone}=req.body
     if(!id||!username){
         return res.status(400).json({ message: "id and username are required" })
     }
@@ -57,7 +57,7 @@ const updateUser=async (req,res)=>{
 }
 
 const deleteUser=async (req,res)=>{
-    const {id}=req.name
+    const {id}=req.body
 
     if(!id){
         return res.status(400).json({ message: "id is required" })
@@ -73,7 +73,7 @@ const deleteUser=async (req,res)=>{
     if(!users?.length){
         return res.status(400).json({message: 'No users found'})
     }
-    res.json(users)
+    res.send(`user ${user.username} id ${user.id} deleted`).json(users)
 }
 module.exports = {
     createUser,

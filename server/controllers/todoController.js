@@ -70,7 +70,7 @@ const deleteTodo=async (req,res)=>{
     if(!todos?.length){
         return res.status(400).json({message: 'No todos found'})
     }
-    res.json(todos)
+    res.send(`todo ${todo.title} id ${todo.id} deleted`).json(todos)
 }
 module.exports = {
     createTodo,
