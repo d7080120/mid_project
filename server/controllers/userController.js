@@ -1,7 +1,7 @@
 const User = require("../models/User");
 
 const createUser = async (req, res) => {
-    const { username, name, email, address, phone } = req.name
+    const { username, name, email, address, phone } = req.body
     if (!username) {
         return res.status(400).json({ message: 'username is required' })
     }
@@ -36,7 +36,7 @@ const getUserById = async (req, res) => {
     }
 
 const updateUser=async (req,res)=>{
-    const {id,username, name, email, address, phone}=req.name
+    const {id,username, name, email, address, phone}=req.body
     if(!id||!username){
         return res.status(400).json({ message: "id and username are required" })
     }
@@ -57,7 +57,7 @@ const updateUser=async (req,res)=>{
 }
 
 const deleteUser=async (req,res)=>{
-    const {id}=req.name
+    const {id}=req.body
 
     if(!id){
         return res.status(400).json({ message: "id is required" })
