@@ -7,8 +7,8 @@ const postConroller=require("../controllers/postController")
 router.post("/", postConroller.createPost)
 router.get("/byParams", postConroller.getPostByParams)
 router.get("/",postConroller.getAllPosts)
-router.get("/:id",postConroller.getPostById)
+router.get("/:_id",postConroller.getPostById)
 router.put("/",postConroller.updatePost)
-router.delete("/",postConroller.deletePost)
+router.delete("/:_id",postConroller.deletePost)
 
 module.exports = router

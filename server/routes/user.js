@@ -6,8 +6,8 @@ const userConroller=require("../controllers/userController")
 
 router.post("/", userConroller.createUser)
 router.get("/",userConroller.getAllUsers)
-router.get("/:id",userConroller.getUserById)
+router.get("/:_id",userConroller.getUserById)
 router.put("/",userConroller.updateUser)
-router.delete("/",userConroller.deleteUser)
+router.delete("/:_id",userConroller.deleteUser)
 
 module.exports = router
