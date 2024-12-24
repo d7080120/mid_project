@@ -13,7 +13,7 @@ const createUser = async (req, res) => {
             user:users
          })
     } else {
-        return res.status(400).json({ message: 'Invalid user ' })
+        return res.status(400).json({ message: 'Inval_id user ' })
     }
 }
 
@@ -27,8 +27,8 @@ const getAllUsers = async (req,res) => {
 
 
 const getUserById = async (req, res) => {
-    const {id} = req.params
-    const user = await User.findById(id).lean()
+    const {_id} = req.params
+    const user = await User.findById(_id).lean()
     if (!user) {
     return res.status(400).json({ message: 'No users found' })
     }
@@ -36,11 +36,11 @@ const getUserById = async (req, res) => {
     }
 
 const updateUser=async (req,res)=>{
-    const {id,username, name, email, address, phone}=req.body
-    if(!id||!username){
-        return res.status(400).json({ message: "id and username are required" })
+    const {_id,username, name, email, address, phone}=req.body
+    if(!_id||!username){
+        return res.status(400).json({ message: "_id and username are required" })
     }
-    const user= await User.findById(id).exec()
+    const user= await User.findById(_id).exec()
     if(!user){
         return res.status(400).json({ message: 'user not found' })
     }
@@ -57,12 +57,12 @@ const updateUser=async (req,res)=>{
 }
 
 const deleteUser=async (req,res)=>{
-    const {id}=req.body
+    const {_id}=req.body
 
-    if(!id){
-        return res.status(400).json({ message: "id is required" })
+    if(!_id){
+        return res.status(400).json({ message: "_id is required" })
     }
-    const user = await User.findById(id).exec()
+    const user = await User.findById(_id).exec()
     if(!user){
         return res.status(400).json({ message: 'User not found' })
     }
@@ -73,7 +73,7 @@ const deleteUser=async (req,res)=>{
     if(!users?.length){
         return res.status(400).json({message: 'No users found'})
     }
-    res.send(`user ${user.username} id ${user.id} deleted`).json(users)
+    res.send(`user ${user.username} _id ${user._id} deleted`).json(users)
 }
 module.exports = {
     createUser,

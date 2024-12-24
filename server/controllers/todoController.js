@@ -13,7 +13,7 @@ const createTodo = async (req, res) => {
             todo:todos
          })
     } else {
-        return res.status(400).json({ message: 'Invalid todo ' })
+        return res.status(400).json({ message: 'Inval_id todo ' })
     }
 }
 
@@ -27,8 +27,8 @@ const getAllTodos = async (req,res) => {
 
 
 const getTodoById = async (req, res) => {
-    const {id} = req.params
-    const todo = await Todo.findById(id).lean()
+    const {_id} = req.params
+    const todo = await Todo.findById(_id).lean()
     if (!todo) {
     return res.status(400).json({ message: 'No todo found' })
     }
@@ -36,16 +36,17 @@ const getTodoById = async (req, res) => {
     }
 
 const updateTodo=async (req,res)=>{
-    const {id,title,tags}=req.body
-    if(!id||!title){
-        return res.status(400).json({ message: "id and title are required" })
+    const {_id,title,tags,completed}=req.body
+    if(!_id||!title){
+        return res.status(400).json({ message: "_id and title are required" })
     }
-    const todo= await Todo.findById(id).exec()
+    const todo= await Todo.findById(_id).exec()
     if(!todo){
         return res.status(400).json({ message: 'todo not found' })
     }
     todo.title=title
     todo.tags=tags
+    todo.completed=completed
 
     const updatedTodo=await todo.save()
     const todos=await Todo.find().lean()
@@ -54,22 +55,21 @@ const updateTodo=async (req,res)=>{
 }
 
 const deleteTodo=async (req,res)=>{
-    const {id}=req.body
-
-    if(!id){
-        return res.status(400).json({ message: "id is required" })
+    const {_id}=req.params
+    console.log(_id);
+    if(!_id){
+        return res.status(400).json({ message: "_id is required" })
     }
-    const todo = await Todo.findById(id).exec()
+    const todo = await Todo.findById(_id).exec()
     if(!todo){
         return res.status(400).json({ message: 'Todo not found' })
     }
-
     await todo.deleteOne()
     const todos=await Todo.find().lean()
     if(!todos?.length){
         return res.status(400).json({message: 'No todos found'})
     }
-    res.send(`todo ${todo.title} id ${todo.id} deleted`).json(todos)
+    res.json(todos)
 
 }
 module.exports = {

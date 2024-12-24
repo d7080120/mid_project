@@ -6,7 +6,7 @@ const photoConroller=require("../controllers/photoController")
 
 router.post("/", photoConroller.createPhoto)
 router.get("/",photoConroller.getAllPhotos)
-router.get("/:id",photoConroller.getPhotoById)
+router.get("/:_id",photoConroller.getPhotoById)
 router.put("/",photoConroller.updatePhoto)
 router.delete("/",photoConroller.deletePhoto)
 

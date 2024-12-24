@@ -6,8 +6,8 @@ const todoConroller=require("../controllers/todoController")
 
 router.post("/", todoConroller.createTodo)
 router.get("/",todoConroller.getAllTodos)
-router.get("/:id",todoConroller.getTodoById)
+router.get("/:_id",todoConroller.getTodoById)
 router.put("/",todoConroller.updateTodo)
-router.delete("/",todoConroller.deleteTodo)
+router.delete("/:_id",todoConroller.deleteTodo)
 
 module.exports = router

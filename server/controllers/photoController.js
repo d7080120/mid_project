@@ -26,8 +26,8 @@ const getAllPhotos = async (req,res) => {
 }
 
 const getPhotoById = async (req, res) => {
-    const {id} = req.params
-    const photo = await Photo.findById(id).lean()
+    const {_id} = req.params
+    const photo = await Photo.findById(_id).lean()
     if (!photo) {
     return res.status(400).json({ message: 'No photos found' })
     }
@@ -36,10 +36,10 @@ const getPhotoById = async (req, res) => {
 
 const updatePhoto=async (req,res)=>{
     const {title,imageUrl}=req.body
-    if(!id||!imageUrl){
-        return res.status(400).json({ message: "id and photoname are required" })
+    if(!_id||!imageUrl){
+        return res.status(400).json({ message: "_id and photoname are required" })
     }
-    const photo= await Photo.findById(id).exec()
+    const photo= await Photo.findById(_id).exec()
     if(!photo){
         return res.status(400).json({ message: 'photo not found' })
     }
@@ -53,12 +53,12 @@ const updatePhoto=async (req,res)=>{
 }
 
 const deletePhoto=async (req,res)=>{
-    const {id}=req.body
+    const {_id}=req.body
 
-    if(!id){
-        return res.status(400).json({ message: "id is required" })
+    if(!_id){
+        return res.status(400).json({ message: "_id is required" })
     }
-    const photo = await Photo.findById(id).exec()
+    const photo = await Photo.findById(_id).exec()
     if(!photo){
         return res.status(400).json({ message: 'Photo not found' })
     }
@@ -68,7 +68,7 @@ const deletePhoto=async (req,res)=>{
     if(!photos?.length){
         return res.status(400).json({message: 'No photos found'})
     }
-    res.send(`photo ${photo.title} id ${photo.id} deleted`).json(photos)
+    res.send(`photo ${photo.title} _id ${photo._id} deleted`).json(photos)
 }
 module.exports = {
     createPhoto,
