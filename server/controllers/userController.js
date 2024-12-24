@@ -57,19 +57,9 @@ const updateUser=async (req,res)=>{
 }
 
 const deleteUser=async (req,res)=>{
-<<<<<<< HEAD
-    console.log("kkkkkkkkkkkkkkkkkkkk")
-
-    const {_id}=req.params
-
+    const {_id}=req.body
     if(!_id){
         return res.status(400).json({ message: "id is required" })
-=======
-    const {_id}=req.body
-
-    if(!_id){
-        return res.status(400).json({ message: "_id is required" })
->>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21
     }
     const user = await User.findById(_id).exec()
     if(!user){
@@ -82,11 +72,7 @@ const deleteUser=async (req,res)=>{
     if(!users?.length){
         return res.status(400).json({message: 'No users found'})
     }
-<<<<<<< HEAD
     res.json(users)
-=======
-    res.send(`user ${user.username} _id ${user._id} deleted`).json(users)
->>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21
 }
 module.exports = {
     createUser,

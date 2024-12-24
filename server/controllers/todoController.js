@@ -55,13 +55,7 @@ const updateTodo=async (req,res)=>{
 }
 
 const deleteTodo=async (req,res)=>{
-<<<<<<< HEAD
-    const {_id}=req.body
-
-=======
     const {_id}=req.params
-    console.log(_id);
->>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21
     if(!_id){
         return res.status(400).json({ message: "_id is required" })
     }
@@ -74,12 +68,7 @@ const deleteTodo=async (req,res)=>{
     if(!todos?.length){
         return res.status(400).json({message: 'No todos found'})
     }
-<<<<<<< HEAD
-    res.send(`todo ${todo.title} _id ${todo._id} deleted`).json(todos)
-=======
     res.json(todos)
->>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21
-
 }
 module.exports = {
     createTodo,
