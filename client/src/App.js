@@ -1,13 +1,12 @@
 import logo from './logo.svg';
 import './App.css';
-<<<<<<< HEAD
 import { Link, Route, Routes } from 'react-router-dom'
 import Home from './Components/Home';
-import Login from './Components/Login';
 import Navbars from './Components/Navbars';
-import Todos from './Components/Todo';
+import Todos from './Components/Todo/Todos';
+import Posts from './Components/Post/Posts';
+
 import Users from './Components/User/Users';
-import UpdateUser from './Components/User/UpdateUser';
 
 
 
@@ -19,16 +18,17 @@ function App() {
   return (
     <div className="App">
       <Navbars/>
-      <UpdateUser user={user}/>
-      <Routes>
+      <Routes>      
+        {/* <UpdateUser user={user}/> */}
+
         <Route path='/' element={<Home/>} />
-        {/* <Route path='/login' element={<Login/>} /> */}
         <Route path='/todos' element={<Todos/>} />
-        {/* { <Route path='/photo' element={<Photo/>} /> */}
+        <Route path='/posts' element={<Posts/>} />
+        {/* <Route path='/post/:_id' element={<Post post={post}/>} /> */}
+
         <Route path='/users' element={<Users/>} />
-        {/* <Route path='/post' element={<Post/>} />  */}
         
-=======
+{/* =======
 import Navbars from './Components/Navbars';
 import Todos from './Components/Todo/Todos';
 import Home from './Components/Home';
@@ -45,7 +45,7 @@ function App() {
         <Route path='/photos' element={<Photos/>} />
         <Route path='/users' element={<Users/>} /> */}
 
->>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21
+{/* >>>>>>> 51abc03662a76c10b66fa9f9fb1cf441b6ce9e21 */} 
       </Routes>
     </div>
   );

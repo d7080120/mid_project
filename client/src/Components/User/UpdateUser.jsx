@@ -40,13 +40,12 @@ export default function UpdateUser(props) {
   const handleClose = () => {
     setOpen(false);
   };
-  const setting=()=>{
-    // handleClose()
-    updateUser()
-  }
-  const updateUser = async (user) => {
-    console.log(user)
-    try{
+  // const setting=()=>{
+  //   // handleClose()
+  //   updateUser()
+  // }
+  const updateUserDB = async (user) => {
+        try{
       const res = await axios.put('http://localhost:1135/api/users',user)
       if(res.status===200){
           setUsersData(res.data)
@@ -57,10 +56,10 @@ export default function UpdateUser(props) {
       console.log(err.status)
   }
   }
-  const save=()=>{
-    handleClose()
+  // const save=()=>{
+  //   handleClose()
 
-  }
+  // }
   return (
     <React.Fragment>
       <Button  onClick={handleClickOpen} style={{Margin:120}}>
@@ -86,15 +85,21 @@ export default function UpdateUser(props) {
           component: 'form',
           onSubmit: (event) => {
             event.preventDefault();
+            console.log("formJson.name");
+
             const formData = new FormData(event.currentTarget);
             const formJson = Object.fromEntries(formData.entries());
             const phone = formJson.phone;
+            const address = formJson.address;
+            const email = formJson.email;
+            const username = formJson.username;
             const name=formJson.name
-            // const newTags=tags.split(',');
             user.name=name
+            user.email=email
+            user.username=username
+            user.address=address
             user.phone = phone
-            console.log(user.name)
-            updateUser(user)
+            updateUserDB(user)
             handleClose();
           },
         }}
@@ -102,6 +107,15 @@ export default function UpdateUser(props) {
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
           update {name}
         </DialogTitle>
+        <TextField
+          id="username"
+          label="username"
+          defaultValue={username}
+          variant="filled"
+           type='username'
+          name='username'
+          required='true'
+        />
         <TextField
           id="name"
           label="Name"
@@ -118,6 +132,23 @@ export default function UpdateUser(props) {
            type='phone'
           name='phone'
         />
+              <TextField
+          id="email"
+          label="email"
+          defaultValue={email}
+          variant="filled"
+           type='email'
+          name='email'
+        />
+              <TextField
+          id="address"
+          label="address"
+          defaultValue={address}
+          variant="filled"
+           type='address'
+          name='address'
+        />
+         
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -138,7 +169,7 @@ export default function UpdateUser(props) {
         <DialogContent dividers>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={save}>
+          <Button type="submit" >
             Save changes
           </Button>
         </DialogActions>

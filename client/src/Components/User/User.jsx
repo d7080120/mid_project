@@ -13,12 +13,25 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios'
 import UpdateUser from './UpdateUser';
-
+import CreateUserButton from './CreateUserButton';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Button from '@mui/material/Button';
 
 
 export default function User(props) {
     const {user}=props
+    const {createUser}=props
     const {setUsersData}=props
+    const letter=  ()=>{try{
+     return user.name[0].toUpperCase()
+    }
+    catch(e){
+     return ""
+    }}
     const userq={
       title:"sssssss",
       tags:["dd","jj"]
@@ -53,34 +66,12 @@ export default function User(props) {
             setUsersData([])
     }
 }
-const updateUser = async () => {
-  const objUser = {
-      email: "ccc@gmail.com",
-      name: "ccc",
-      phone: "0583271152",
-      username: "ccc1152",
-      _id:"675727cec84cae9608d85008"
-  }
-  try{
-    const res = await axios.put('http://localhost:1135/api/users',objUser)
-    if(res.status===200){
-        setUsersData(res.data)
-    }
-}
-catch(err){
-    console.log(err.message)
-    console.log(err.status)
-}
-}
   const deleteUser = () => {
     handleClose()
     deleteUsers()
+    console.log("f");
 
   };
-  const setting=()=>{
-    // handleClose()
-    // updateUser()
-  }
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
@@ -93,7 +84,7 @@ catch(err){
             aria-haspopup="true"
             aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>{user.name[0].toUpperCase()}</Avatar>
+            <Avatar sx={{ width: 32, height: 32 }}>{letter()}</Avatar>
           </IconButton>
         </Tooltip>
         <Typography sx={{ minWidth: 100 }}>{user.name}</Typography>
@@ -136,33 +127,52 @@ catch(err){
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> Profile
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
-        </MenuItem>
+        
+        <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        ><MenuItem>
+          <Typography component="span"> 
+                     <Avatar />
+          </Typography> My account</MenuItem>
+        </AccordionSummary>
+        <AccordionDetails>
+   my name :{user.name}
+   <br></br>
+   my username :{user.username}
+   <br></br>
+   my address :{user.address}
+   <br></br>
+   my email :{user.email}
+   <br></br>
+   my phone :{user.phone}
+  
+        </AccordionDetails>
+      </Accordion>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem >
           <ListItemIcon>
-            <PersonAdd fontSize="small" />
+           <CreateUserButton createUser={createUser}></CreateUserButton>
           </ListItemIcon>
+          
           Add another account
         </MenuItem>
-        <MenuItem onClick={setting}>
-        
-        
+        <MenuItem >
         <ListItemIcon>
-            {/* <Settings fontSize="small" /> */}
             <UpdateUser user={user}/>
           </ListItemIcon>
           Settings
         </MenuItem>
         <MenuItem onClick={deleteUser}>
+        <MenuItem >
           <ListItemIcon>
         <DeleteIcon  fontSize="small"  color="default"/>
           </ListItemIcon>
-          delete
+        delete
+        </MenuItem>
+
         </MenuItem>
       </Menu>
     </React.Fragment>

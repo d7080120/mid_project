@@ -57,7 +57,7 @@ const updateUser=async (req,res)=>{
 }
 
 const deleteUser=async (req,res)=>{
-    const {_id}=req.body
+    const {_id}=req.params
     if(!_id){
         return res.status(400).json({ message: "id is required" })
     }

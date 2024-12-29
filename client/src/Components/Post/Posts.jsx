@@ -1,27 +1,27 @@
-import Todo from "./Todo"
+import Post from "./Post"
 import { useEffect, useState } from "react"
 import axios from 'axios'
 
-// const Todos=()=>{
-//     const [todos,setTodos]=useState([])
-//     const getTodos=async()=>{
+// const Posts=()=>{
+//     const [posts,setPosts]=useState([])
+//     const getPosts=async()=>{
 //         try{
-//             const res=await axios.get('http://localhost:1135/api/todos')
+//             const res=await axios.get('http://localhost:1135/api/posts')
 //             if(res.status===200){
 //                 console.log(res.data);
-//                 setTodos(res.data)
+//                 setPosts(res.data)
 //             }       
 //         }
 //         catch(e){
 //             console.log(e);
 //         }
 //     }
-//     useEffect(()=>{getTodos()},[])
+//     useEffect(()=>{getPosts()},[])
 //     return(<>
-//         {todos.map(t=>{ console.log(t) ;return(<Todo todo={t} setTodos={setTodos}></Todo>)})}
+//         {posts.map(t=>{ console.log(t) ;return(<Post post={t} setPosts={setPosts}></Post>)})}
 //     </>)
 // }
-// export default Todos
+// export default Posts
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
@@ -42,9 +42,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import CreateTodoButton from "./CreateTodoButton";
-import TextField from '@mui/material/TextField';
-import InputBase from '@mui/material/InputBase';
+import CreatePostButton from "./CreatePostButton";
 
 
 
@@ -58,51 +56,41 @@ const StyledFab = styled(Fab)({
 });
 
 export default function BottomAppBar() {
-  const [todos, setTodos] = useState([])
-
-  const searchBy = React.useRef(null)
-  const getTodos = async () => {
+  const [posts, setPosts] = useState([])
+  const getPosts = async () => {
     try {
-      const res = await axios.get('http://localhost:1135/api/todos')
+      const res = await axios.get('http://localhost:1135/api/posts')
       if (res.status === 200) {
         console.log(res.data);
-        console.log(searchBy.current.value)
-        if (searchBy.current.value === "")
-          return setTodos(res.data)
-
-        const t = res.data.filter(t => t.title == searchBy.current.value)
-        console.log({ t: t });
-        setTodos(t)
+        setPosts(res.data)
       }
     }
     catch (e) {
       if (e.status === 400) {
-        setTodos([])
+        setPosts([])
       }
       console.log(e);
     }
   }
-  useEffect(() => { getTodos() }, [])
-  const createTodo = async (todo) => {
+  useEffect(() => { getPosts() }, [])
+  const createPost = async (post) => {
     try {
-      const res = await axios.post('http://localhost:1135/api/todos', todo)
-      console.log(res.data.todos);
+      const res = await axios.post('http://localhost:1135/api/posts', post)
       if (res.status === 201)
-        setTodos(res.data.todos)
+        setPosts(res.data.post)
     }
     catch (e) {
       console.log(e);
     }
   }
-
   return (
     <React.Fragment>
       <CssBaseline />
       <Paper square sx={{ pb: '50px' }}>
         <Typography variant="h5" gutterBottom component="div" color="secondary" sx={{ p: 2, pb: 0 }}>
-          Todos
+          Posts
         </Typography>
-        {todos.map(t => { console.log(t); return (<Todo todo={t} setTodos={setTodos}></Todo>) })}
+        {posts.map(t => { return (<Post post={t} setPosts={setPosts}></Post>) })}
       </Paper>
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar>
@@ -110,15 +98,16 @@ export default function BottomAppBar() {
             <MenuIcon />
           </IconButton>
           <StyledFab color="secondary" aria-label="add">
-            <CreateTodoButton color="secondary" aria-label="add" setTodos={setTodos} createTodo={createTodo} ></CreateTodoButton>
+            <CreatePostButton color="secondary" aria-label="add" setPosts={setPosts} createPost={createPost} ></CreatePostButton>
           </StyledFab>
 
           <Box sx={{ flexGrow: 1 }} />
-          <TextField id="outlined-basic" label="search" variant="outlined" inputRef={searchBy} />
-          <IconButton color="inherit" onClick={() => { getTodos() }} >
+          <IconButton color="inherit">
             <SearchIcon />
           </IconButton>
-
+          <IconButton color="inherit">
+            <MoreIcon />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </React.Fragment>

@@ -66,7 +66,7 @@ const updatePost=async (req,res)=>{
 }
 
 const deletePost=async (req,res)=>{
-    const {_id}=req.body
+    const {_id}=req.params
 
     if(!_id){
         return res.status(400).json({ message: "_id is required" })
@@ -82,7 +82,7 @@ const deletePost=async (req,res)=>{
         return res.status(400).json({message: 'No posts found'})
     }
 
-    res.json(posts).send(`post ${post.title} _id ${post._id} deleted`)
+    res.json(posts)
 }
 module.exports = {
     createPost,
